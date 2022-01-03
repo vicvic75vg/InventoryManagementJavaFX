@@ -2,9 +2,11 @@ package com.example.inventoryapp;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Inventory {
     private ObservableList<Part> allParts = FXCollections.observableArrayList();
@@ -20,8 +22,12 @@ public class Inventory {
         allProducts.add(newProduct);
     }
     public Part lookupPart(int partId) {
+        //Due to the constraints of only returning one Part object as specified in the UML and not a List,
+        //partId is assumed to be equal to only one Part object
+
+        //TODO: Return all matches of partial ID
         for(Part p: allParts) {
-            if (p.getId() == partId) {
+            if (Integer.toString(p.getId()).contains(Integer.toString(partId))) {
                 return p;
             }
         }
@@ -36,18 +42,23 @@ public class Inventory {
         return null;
     }
     public ObservableList<Part> lookupPart(String partName) {
-        return allParts.filtered(part -> part.getName().contains(partName));
+        if(partName.trim().isEmpty()) return null;
+        ObservableList<Part> searchList = FXCollections.observableArrayList();
+        for(Part p: getAllParts()) {
+           if(p.getName().toLowerCase(Locale.ROOT).contains(partName)) {
+               searchList.add(p);
+           }
+       }
+       return searchList;
     }
     public ObservableList<Product> lookupProduct(String productName) {
         return allProducts.filtered(product -> product.getName().contains(productName));
     }
     public void updatePart(int index, Part selectedPart) {
         allParts.set(index,selectedPart);
-        return;
     }
     public void updateProduct(int index, Product newProduct) {
         allProducts.set(index,newProduct);
-        return;
     }
     public boolean deletePart(Part selectedPart) {
         return allParts.remove(selectedPart);

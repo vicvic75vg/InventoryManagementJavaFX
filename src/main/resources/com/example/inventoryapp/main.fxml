@@ -21,9 +21,9 @@
         </columns>
       </TableView>
       <Label layoutX="26.0" layoutY="45.0" text="Parts" />
-      <TextField fx:id="partSearchField" layoutX="236.0" layoutY="32.0" promptText="Search by part ID or name" />
-      <Button fx:id="partModifyButton" layoutX="269.0" layoutY="268.0" mnemonicParsing="false" text="Modify" />
-      <Button fx:id="partDeleteButton" layoutX="329.0" layoutY="268.0" mnemonicParsing="false" text="Delete" />
+      <TextField fx:id="partSearchField" layoutX="236.0" layoutY="32.0" promptText="Search by part ID or name"  onKeyPressed="#filterTable" />
+      <Button fx:id="partModifyButton" layoutX="269.0" layoutY="268.0" mnemonicParsing="false" text="Modify" onAction="#modifyPart"/>
+      <Button fx:id="partDeleteButton" layoutX="329.0" layoutY="268.0" mnemonicParsing="false" text="Delete" onAction="#deletePart" />
       <Button fx:id="partAddButton" layoutX="220.0" layoutY="268.0" mnemonicParsing="false" text="Add" onAction="#addPart" />
        </Pane>
        <Pane layoutX="478.0" layoutY="66.0" prefHeight="318.0" prefWidth="453.0" style="-fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid; -fx-border-radius: 10px; -fx-background-radius:10px">

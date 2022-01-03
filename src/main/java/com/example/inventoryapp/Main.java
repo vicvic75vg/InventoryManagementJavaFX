@@ -2,6 +2,7 @@ package com.example.inventoryapp;
 
 import com.example.inventoryapp.controllers.AddPartController;
 import com.example.inventoryapp.controllers.MainController;
+import com.example.inventoryapp.controllers.ModifyPartController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application {
-    private static Stage stg;
+    private static Stage mainStage;
     private static Inventory inv = new Inventory();
 
 
@@ -22,25 +23,28 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        mainStage = stage;
         inv.addPart(new InHouse(1,"Something", 9.99, 9, 1,10,0221));
-
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
-        MainController controller = new MainController(inv);
-        fxmlLoader.setController(controller);
-        Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root, 1020, 440);
-        stage.setScene(scene);
-        stage.setTitle("Inventory Management System");
+        inv.addPart(new Outsourced(2,"Superpart",9.99,9,1,19,"MAN INC"));
+        inv.addPart(new Outsourced(102,"Plinko",9.99,9,1,19,"MAN INC"));
+        changeSceneToMain();
         stage.show();
-        stg = stage;
     }
     public void changeSceneToAddPart() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddPart.fxml"));
         AddPartController controller = new AddPartController(inv);
+        loader.setController(controller);
+        Parent root = loader.load();
+        mainStage.setScene(new Scene(root,1020,600));
+    }
+    public void changeSceneToModifyPart(Part partSelected) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifyPart.fxml"));
+        ModifyPartController controller = new ModifyPartController(partSelected, inv);
 
         loader.setController(controller);
         Parent root = loader.load();
-        stg.getScene().setRoot(root);
+        mainStage.setScene(new Scene(root,1020,600));
+        mainStage.setTitle("Modify Part");
     }
 
     public void changeSceneToMain() throws IOException {
@@ -48,11 +52,11 @@ public class Main extends Application {
         MainController controller = new MainController(inv);
         loader.setController(controller);
         Parent root = loader.load();
-        stg.getScene().setRoot(root);
+        mainStage.setScene(new Scene(root, 1020, 440));
+        mainStage.setTitle("Inventory Management System");
+
     }
-    public void exit() {
-        stg.close();
-    }
+    public void exit() { mainStage.close(); }
 
 
 }
